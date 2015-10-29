@@ -1,0 +1,131 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="scene-stw">
+
+  <template>
+    <style>
+      .titles  {  
+        position: absolute;  
+        width: 18em;  
+        height: 50em;  
+        bottom: 0;  
+        left: 50%;  
+        margin-left: -9em;  
+        font-size: 350%;  
+        font-weight: bold;  
+        text-align: justify;  
+        overflow: hidden;  
+        transform-origin: 50% 100%;  
+      }
+      .titlecontent {
+        position: absolute;
+        top: 100%;
+      }
+        
+      @keyframes scrollstw {  
+        0%   { top: 100%; }  
+        100% { top: -10%; }  
+      }
+      .titles:after {  
+        position: absolute;  
+        content: ' ';  
+        left: 0;  
+        right: 0;  
+        top: 0;  
+        bottom: 60%;  
+        background-image: linear-gradient(top, rgba(0,0,0,1) 0%, transparent 100%);  
+        pointer-events: none;  
+      }
+      .content{    
+        width: 100%;
+      }
+    </style>
+    <div class="titles">
+      <div class="titlecontent">
+        <div class="content">{{stwcontent}}</div>
+      </div>
+</div>
+  </template>
+
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'scene-stw',
+    properties:{
+      delay:{
+        type: Number,
+        value: 0
+      },
+      speed:{
+        type: Number,
+        value: 100
+      },
+      deep:{
+        type: Number,
+        value:1
+      },
+      lateralBorders:{
+        type: Boolean,
+        value:false
+      },
+      borderColor:{
+        type: String,
+        value: "#000"
+      },
+      backgroundColor:{
+        type: String,
+        value: "#FFF"
+      },
+      elements:{
+        type: Object,
+        value: ["En una galaxia muy lejana..."]
+      },
+      centeredElements:{
+        type: Boolean,
+        value: true
+      },
+      perspective:{
+        type: Number,
+        value: 300
+      },
+      rotateX:{
+        type: Number,
+        value: 25
+      },
+      rotateY:{
+        type: Number,
+        value: 0
+      }
+      /* TODO 
+        isRoad, speedRoad
+      */
+    },
+    ready: function(){
+      var me = this.childNodes[1],
+          allElements = this.getElements( this.elements ),
+          delay = ( this.delay ) ? this.delay+"s " : "",
+          animationCSS = "scrollstw " + this.speed + "s linear " + delay + "infinite",
+          textAlignEls = ( this.centeredElements ) ? "center" : "",
+          borders = ( this.lateralBorders == "true" ) ? "1px solid " + this.borderColor : "";
+
+      this.stwcontent = ( this.stwcontent )?this.stwcontent : allElements;
+      me.style["border-left"] = borders;
+      me.style["border-right"] = borders;
+      me.style["z-index"] = this.deep;
+      me.style.transform = "perspective("+this.perspective+"px) rotateX("+this.rotateX+"deg) rotateY("+this.rotateY+"deg)";
+      me.style.background = this.backgroundColor;
+
+      me.childNodes[1].style.animation = animationCSS;
+      me.childNodes[1].childNodes[1].style["text-align"] = textAlignEls;
+    },
+    getElements: function( els ){
+      var i=0, l=els.length, output = "";
+      for ( ;i<l; i++){
+        output += els[i];
+      }
+      return output;
+    }
+  });
+
+</script>
