@@ -1,0 +1,78 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<!--
+@demo
+-->
+<dom-module id="scene-mountain">
+
+    <style>
+        :host ::content div { background: transparent; position: absolute; }
+        .mountain { width: 0; height: 0; }
+        .mountain .nieve { transform: rotate(45deg); -webkit-transform: rotate(45deg); background:#FFF; }
+        .mountain .nieve2 { width: 0; height: 0; }
+    </style>
+    <template>
+      <div class="mountain">
+        <div class="nieve"></div>
+        <div class="nieve2"></div>
+      </div>
+    </template>
+
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'scene-mountain',
+    properties: {
+      level:{
+        type: Number,
+        value: 1
+      },
+      size:{
+        type: Number,
+        value: 200
+      },
+      color: {
+        type: String,
+        value: "rgb(150, 100, 50)"
+      },
+      levelSize:{
+        type: Number,
+        value: 50
+      },
+      levelBottom:{
+        type: Number,
+        value: 200
+      },
+      position:{
+        type: Number,
+        value: 0
+      }
+    },
+    _offsetX: 0,
+    _offsetY: 0,
+    ready: function(){
+      this.size-=4;
+      this._offsetX = this.size * ( this.position - 1 );
+      this._offsetY = this.levelBottom + ( ( this.level - 1 ) * this.levelSize ); 
+      var m = this.querySelector(".mountain");
+      m.style.borderLeft = this.size + "px solid transparent";
+      m.style.borderRight = this.size + "px solid transparent";
+      m.style.borderBottom = this.size + "px solid " + this.color;
+      m.style.left = ( this.size * 0.425 + this._offsetX ) + "px";
+      m.style.bottom = this._offsetY + "px";
+      m.style.zIndex = ( 100 - this.level );
+      var n = this.querySelector(".nieve"),
+          nS = this.size / 4;
+      n.style.width = nS + "px";
+      n.style.height = nS + "px";
+      n.style.top = ( nS / 5 ) + "px";
+      n.style.left = -( nS / 2 ) + "px";
+      var n2 = this.querySelector(".nieve2");
+      n2.style.borderLeft = nS + "px solid transparent";
+      n2.style.borderRight = nS + "px solid transparent";
+      n2.style.borderBottom = nS + "px solid " + this.color;
+      n2.style.left = -nS + "px";
+      n2.style.top = ( nS * 0.7 ) + "px";
+    }
+  });
+</script>
